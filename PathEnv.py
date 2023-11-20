@@ -19,6 +19,7 @@ class MazeEnv():
 
         self.current_position = self.start
         self.actions = ['up', 'down', 'left', 'right']
+        self.action_size = len(self.actions)
         self.state_space[self.start] = 1  # mark the start
         self.state_space[self.goal] = 2  # mark the goal
         self.generate_random_obstacles()
@@ -128,48 +129,49 @@ class MazeEnv():
 
         # Implement step logic
         if self.episode_ended:
-            return self.reset(), 0, False, False
+            return self.reset(), 0, False
 
         new_position = self.get_next_position(self.current_position, action)
 
         if(new_position == self.current_position):
-            return np.copy(self.state_space), -1, True, True
+            return np.copy(self.state_space), -1, True
         
         elif(new_position in self.obstacles):
-            return np.copy(self.state_space), -1, True, True
+            return np.copy(self.state_space), -1, True
 
         elif(new_position == self.goal):
             self._episode_ended = True
-            return np.copy(self.state_space), 1, True, False
+            return np.copy(self.state_space), 1, True
 
         else:
-            return np.copy(self.state_space), 0, False, False
+            return np.copy(self.state_space), 0, False
         
         
 
-    def render(self):
+    def render(self, time):
         plt.imshow(self.state_space, cmap='gray')
         plt.title('Maze')
-        plt.show()
+        plt.pause(time)
+        plt.clf()
 
-# Example usage
-maze_size = 10
-num_obstacles = 20
-env = MazeEnv(size=maze_size, num_obstacles=num_obstacles)
+# # Example usage
+# maze_size = 10
+# num_obstacles = 20
+# env = MazeEnv(size=maze_size, num_obstacles=num_obstacles)
+# # env.reset()
+# # print(env.state_space)
+# # print(Checking(env.state_space, env.start, env.goal))
+# # env.render()
+# # print(env.current_position)
+# # env.step('right')
+# # env.render()
+
+# env.hit_reset()
+# env.render()
+# env.hit_reset()
+# env.render()
+
 # env.reset()
-# print(env.state_space)
-# print(Checking(env.state_space, env.start, env.goal))
 # env.render()
-# print(env.current_position)
-# env.step('right')
-# env.render()
-
-env.hit_reset()
-env.render()
-env.hit_reset()
-env.render()
-
-env.reset()
-env.render()
 
 # Now you have a maze with a path from start to goal, and you can add logic to randomly generate other positions.
