@@ -143,13 +143,13 @@ class MazeEnv():
         new_position = tuple(new_position)
         
         if(self.current_position == new_position):
-            self._episode_ended = True
-            return self.current_observation(), -10, True
+            # self._episode_ended = True
+            return self.current_observation(), -10, False
         
         elif(new_position in self.obstacles):
-            self._episode_ended = True
-            # self.current_position = new_position
-            return self.current_observation(), -10, True
+            # self._episode_ended = True
+            self.current_position = new_position
+            return self.current_observation(), -10, False
         
         elif(new_position == self.goal):
             self._episode_ended = True
