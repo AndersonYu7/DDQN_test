@@ -1,5 +1,6 @@
 import os
-os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+# os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' #因為Tensorflow 須從源代碼安裝 可能安裝方法不對 導致使用CPU 用這行可以消除警告
 
 import numpy as np
 import time
@@ -15,6 +16,11 @@ import matplotlib.pyplot as plt
 from PathEnv_v5 import MazeEnv
 
 tf.keras.utils.disable_interactive_logging()
+
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+# breakpoint()
+# tf.debugging.set_log_device_placement(True)
+
 
 class DQNAgent:
     def __init__(self, state_size, action_size):
