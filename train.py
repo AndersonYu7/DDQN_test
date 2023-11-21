@@ -1,3 +1,6 @@
+import os
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+
 import numpy as np
 import random
 from collections import deque
@@ -57,12 +60,6 @@ class DQNAgent:
                 a = np.argmax(self.model.predict(next_state)[0])
                 target[0][action] = reward + self.gamma * (self.model.predict(next_state)[0][a])
             self.model.fit(state, target, epochs=1, verbose=0)
-
-    def load(self, name):
-        self.model.load_weights(name)
-
-    def save(self, name):
-        self.model.save_weights(name)
 
     def get_state_size(self):
         return self.state_size

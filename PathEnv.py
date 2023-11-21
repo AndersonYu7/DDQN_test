@@ -18,8 +18,7 @@ class MazeEnv():
             self.goal = self.generate_random_position()
 
         self.current_position = self.start
-        self.actions = ['up', 'down', 'left', 'right']
-        self.action_size = len(self.actions)
+        self.action_size = 4
         self.state_space[self.start] = 1  # mark the start
         self.state_space[self.goal] = 2  # mark the goal
         self.generate_random_obstacles()
@@ -53,13 +52,13 @@ class MazeEnv():
             self.state_space[(int(pos/self.size), int(pos%self.size))] = -1
 
     def get_next_position(self, current_position, action):
-        if action == 'up':
+        if action == 0: #up
             return max(0, current_position[0] - 1), current_position[1]
-        elif action == 'down':
+        elif action == 1: #down
             return min(self.size - 1, current_position[0]+1), current_position[1]
-        elif action == 'left':
+        elif action == 2: #left
             return current_position[0], max(0, current_position[1] - 1)
-        elif action == 'right':
+        elif action == 3:   #right
             return current_position[0], min(self.size - 1, current_position[1] + 1)
         else:
             return ValueError("Invalid action")
@@ -132,11 +131,15 @@ class MazeEnv():
             return self.reset(), 0, False
 
         new_position = self.get_next_position(self.current_position, action)
+        # print(new_position)
+        # breakpoint()
 
         if(new_position == self.current_position):
+            self._episode_ended = True
             return np.copy(self.state_space), -1, True
         
         elif(new_position in self.obstacles):
+            self._episode_ended = True
             return np.copy(self.state_space), -1, True
 
         elif(new_position == self.goal):
@@ -144,6 +147,11 @@ class MazeEnv():
             return np.copy(self.state_space), 1, True
 
         else:
+            self._episode_ended = False
+            self.state_space[self.current_position] = 0
+            self.current_position = new_position
+            print(new_position)
+            self.state_space[new_position] = 1
             return np.copy(self.state_space), 0, False
         
         
