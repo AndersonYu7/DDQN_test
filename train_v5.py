@@ -130,26 +130,30 @@ if __name__ == '__main__':
 
     agent = DQNAgent(state_size, action_size)
     batch_size = 64
-    EPISODES = 10000
+    EPISODES = 1000
     episodes_max_step = env.get_max_steps()
 
     done = False
     cnt = 0
+    cnt2 = 0
     for episode in range(EPISODES):
         state = env.hit_reset()
         print('cnt: ', cnt)
+        print('cnt2: ', cnt2)
         if(done and cnt < 20):
             print('reset 1')
             cnt+=1
             state = env.hit_reset()
-        elif(done and cnt == 20 and episode%100!=0):
+        elif(done and cnt == 20):
             print('reset 2')
             cnt = 0
+            cnt2+=1
             state = env.new_start_reset()
             agent.epsilon = 1.0  # exploration rate
-        elif(done and episode%100==0):
+        elif(done and cnt2 == 5):
             print('reset 3')
             cnt = 0
+            cnt2 = 0
             state = env.all_reset()
             agent.epsilon = 1.0  # exploration rate
 
