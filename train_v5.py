@@ -192,6 +192,8 @@ if __name__ == '__main__':
         if episode % agent.update_target_frequency == 0:
             agent.update_target_model()  # 新增：定期更新目標網路
 
+        tf.keras.backend.clear_session()
+
         agent.plot(agent.loss_history, 'Training Loss', 'loss')
         agent.plot(agent.total_rewards,  'Total reward', 'reward', num = 3)
 
