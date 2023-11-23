@@ -189,6 +189,8 @@ class MazeEnv():
     def game_reset(self):
         self.generate_start_end_pos()
 
+        return self.current_observation()
+
 
     def step(self, action):
         if self.episode_ended:
