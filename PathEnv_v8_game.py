@@ -197,13 +197,13 @@ class MazeEnv():
         new_position = np.copy(self.current_position)
 
         if action == 0:  # Move Up
-            new_position[0] = max(0, new_position[0] - 1)
+            new_position[0] = max(20, new_position[0] - 1)
         elif action == 1:  # Move Down
-            new_position[0] = min(self.size - 1, new_position[0] + 1)
+            new_position[0] = min(49, new_position[0] + 1)
         elif action == 2:  # Move Left
             new_position[1] = max(0, new_position[1] - 1)
         elif action == 3:  # Move Right
-            new_position[1] = min(self.size - 1, new_position[1] + 1)
+            new_position[1] = min(49-1, new_position[1] + 1)
         else:
             return ValueError("Invalid action")
         
