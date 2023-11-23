@@ -161,9 +161,17 @@ if __name__ == '__main__':
         # print('cnt: ', cnt)
         print('cnt2: ', cnt2)
         are_all_deqeue = are_all_elements_equal(agent.rewards_stable)
-
-        # if(done):
-        #     state = env.game_reset()
+        if(done and agent.epsilon>agent.epsilon_min):
+            print('reset 1')
+            # cnt+=1
+            state = env.hit_reset()
+        elif(done and (agent.epsilon <= agent.epsilon_min or are_all_deqeue)):
+            print('reset 2')
+            # cnt = 0
+            cnt2+=1
+            state = env.game_reset()
+            agent.epilon_max*=agent.epilon_max_decay
+            agent.epsilon = agent.epilon_max  # exploration rate
 
         total_reward = 0
         step = 0
