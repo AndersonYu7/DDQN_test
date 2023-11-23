@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import math
 from checkpath import Checking
 
 class MazeEnv():
@@ -169,13 +170,15 @@ class MazeEnv():
         elif(new_position == self.goal):
             self._episode_ended = True
             self.current_position = new_position
-            return self.current_observation(), 5, True
+            distance = np.linalg.norm(np.array(self.start) - np.array(self.goal))
+            # return self.current_observation(), 5, True
+            return self.current_observation(), distance*0.5, True
         else:
             self.current_position = new_position
 
             distance_reward = 1 / (1 + np.linalg.norm(np.array(new_position) - np.array(self.goal)))
 
-            return self.current_observation(), -0.1 + distance_reward, False
+            return self.current_observation(), -0.5 + distance_reward, False
 
     def get_max_steps(self):
         return self.size * self.size * 2

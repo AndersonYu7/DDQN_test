@@ -29,9 +29,10 @@ class DQNAgent:
         self.memory = deque(maxlen=2000)
         self.gamma = 0.95  # discount rate
         self.epsilon = 1.0  # exploration rate
-        self.epsilon_min = 0.01
+        self.epsilon_min = 0.05
+        self.epilon_max = 1.0
         self.epsilon_decay = 0.99
-        self.epilon_max_decay = 0.99
+        self.epilon_max_decay = 0.95
         self.learning_rate = 0.001
         self.update_target_frequency = 10
         self.model = self._build_model()
@@ -120,14 +121,14 @@ def save_model(agent, episode, model_dir='models'):
 
 
 if __name__ == '__main__':
-    state_size = 10
+    state_size = 64
     num_obstacles = 20
     action_size = 4
     env = MazeEnv(state_size, num_obstacles)
 
     agent = DQNAgent(state_size, action_size)
     batch_size = 64
-    EPISODES = 1000
+    EPISODES = 10000
     episodes_max_step = env.get_max_steps()
 
     done = False
@@ -147,14 +148,16 @@ if __name__ == '__main__':
             # cnt = 0
             cnt2+=1
             state = env.new_start_reset()
-            agent.epsilon = 1.0*agent.epilon_max_decay  # exploration rate
+            self.epilon_max*=agent.epilon_max_decay
+            agent.epsilon = self.epilon_max  # exploration rate
 
         elif(done and cnt2 == 5):
             print('reset 3')
             # cnt = 0
             cnt2 = 0
             state = env.all_reset()
-            agent.epsilon = 1.0*agent.epilon_max_decay  # exploration rate
+            self.epilon_max*=agent.epilon_max_decay
+            agent.epsilon = self.epilon_max  # exploration rate
 
         total_reward = 0
         step = 0
