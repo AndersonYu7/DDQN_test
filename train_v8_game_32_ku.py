@@ -157,7 +157,7 @@ if __name__ == '__main__':
     cnt2 = 0
 
     for episode in range(EPISODES):
-        state = env.game_reset()
+        state = env.hit_reset()
         # print('cnt: ', cnt)
         print('cnt2: ', cnt2)
         are_all_deqeue = are_all_elements_equal(agent.rewards_stable)
